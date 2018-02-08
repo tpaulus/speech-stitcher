@@ -4,8 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 /**
  * @author Tom Paulus
  * Created on 1/22/18.
@@ -18,11 +16,11 @@ public class Word {
 
     @SerializedName("start")
     @Expose
-    public Timestamp start;
+    public String start;
 
     @SerializedName("end")
     @Expose
-    public Timestamp end;
+    public String end;
 
     @SerializedName("word")
     @Expose
