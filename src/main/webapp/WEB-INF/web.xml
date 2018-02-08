@@ -17,6 +17,16 @@
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>Demo</servlet-name>
+        <servlet-class>edu.sdsu.cs.Routes.Demo</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Demo</servlet-name>
+        <url-pattern>/demo</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>API</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

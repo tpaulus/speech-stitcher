@@ -16,7 +16,7 @@ var config = {
 };
 
 // DEPENDENCIES
-gulp.task('libs', ['bootstrap-css', 'bootstrap-js', 'jquery', 'font-awesome-css', 'font-awesome-js', 'sweet-alerts']);
+gulp.task('libs', ['bootstrap-css', 'bootstrap-js', 'jquery', 'skel', 'font-awesome-css', 'font-awesome-js', 'sweet-alerts', 'smooth-scroll']);
 
 gulp.task('bootstrap-css', function (cb) {
     pump([
@@ -65,11 +65,26 @@ gulp.task('jquery', function (cb) {
     ], cb);
 });
 
+gulp.task('skel', function (cb) {
+    pump([
+        gulp.src('./node_modules/skel-framework-npm/dist/*'),
+        filter('**/skel.min.*'),
+        gulp.dest(config.outputDir + '/js')
+    ], cb);
+});
+
 gulp.task('sweet-alerts', function () {
     return gulp.src('./node_modules/sweetalert/dist/sweetalert.min.js')
         .pipe(gulp.dest(config.outputDir + '/js'));
 });
 
+gulp.task('smooth-scroll', function (cb) {
+    pump([
+        gulp.src('./node_modules/jquery-smooth-scroll/*'),
+        filter('**/*.min.*'),
+        gulp.dest(config.outputDir + '/js')
+    ], cb);
+});
 
 // IMAGES
 gulp.task('images', function () {
@@ -96,13 +111,24 @@ gulp.task('css', function (cb) {
 });
 
 // JS
-gulp.task('js', ['libs'], function (cb) {
+gulp.task('js', ['libs', 'js-ie'], function (cb) {
     pump([
             gulp.src(config.jsPath + '/*'),
             filter('**/*.js'),
             uglify(),
             concat("main.min.js"),
             gulp.dest(config.outputDir + '/js')
+        ],
+        cb
+    );
+});
+
+gulp.task('js-ie', ['libs'], function (cb) {
+    pump([
+            gulp.src(config.jsPath + '/ie/*'),
+            filter('**/*.js'),
+            uglify(),
+            gulp.dest(config.outputDir + '/js/ie')
         ],
         cb
     );
