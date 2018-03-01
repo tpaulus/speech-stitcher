@@ -2,7 +2,10 @@ package edu.sdsu.cs.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import edu.sdsu.cs.Transcode.Utterances;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * @author Tom Paulus
@@ -30,7 +33,15 @@ public class Word {
     @Expose
     public String source;
 
+    @Getter(AccessLevel.NONE)
     @SerializedName("next")
     @Expose
     public Word nextWord;
+
+    public Word getNextWord(final String tableName) {
+        if (nextWord != null)
+            return Utterances.getWordByID(tableName, nextWord.id);
+        else
+            return null;
+    }
 }

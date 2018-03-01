@@ -1,0 +1,61 @@
+package edu.sdsu.cs;
+
+import edu.sdsu.cs.Models.StitchJob;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j;
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
+import org.mapdb.HTreeMap;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author Tom Paulus
+ * Created on 2/28/18.
+ */
+@Log4j
+public class JobStore {
+    @Getter
+    private static final int JOB_TTL = 36;
+    private static JobStore instance = new JobStore();
+
+    private DB db;
+    private HTreeMap<String, StitchJob> map;
+
+    @SuppressWarnings("unchecked")
+    private JobStore() {
+        ScheduledExecutorService executor =
+                Executors.newScheduledThreadPool(1);
+
+        db = DBMaker
+                .memoryDB()
+                .make();
+        map = (HTreeMap<String, StitchJob>) db
+                .hashMap("jobs")
+                .expireAfterUpdate(JOB_TTL, TimeUnit.HOURS)
+                .expireExecutor(executor)
+                .expireExecutorPeriod(300000)  // Run every 5 minutes
+                .createOrOpen();
+    }
+
+    public static JobStore getInstance() {
+        return instance;
+    }
+
+    public StitchJob getJob(final String id) {
+        return map.get(id);
+    }
+
+    public void putJob(final StitchJob job) {
+        map.putIfAbsent(job.getJobID(), job);
+        db.commit();
+    }
+
+    public StitchJob removeJob(final String id) {
+        StitchJob stitchJob = map.remove(id);
+        db.commit();
+        return stitchJob;
+    }
+}
