@@ -149,6 +149,7 @@ public class Utterances {
             AmazonDynamoDB client = AmazonDynamoDBClientBuilder
                     .standard()
                     .withCredentials(Credentials.getCredentials())
+                    .withRegion(Credentials.getRegion())
                     .build();
 
             dynamoDB = new DynamoDB(client);

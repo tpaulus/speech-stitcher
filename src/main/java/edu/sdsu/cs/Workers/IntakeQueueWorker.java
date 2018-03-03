@@ -1,7 +1,9 @@
 package edu.sdsu.cs.Workers;
 
 import edu.sdsu.cs.IntakeQueue;
+import edu.sdsu.cs.JobStore;
 import edu.sdsu.cs.Models.StitchJob;
+import edu.sdsu.cs.Transcode.ETJob;
 import edu.sdsu.cs.Transcode.Utterances;
 import lombok.extern.log4j.Log4j;
 import org.quartz.*;
@@ -50,7 +52,7 @@ public class IntakeQueueWorker implements Job {
         job.updateStatus(status);
     }
 
-    @Override
+    @SuppressWarnings("RedundantThrows")
     public void execute(JobExecutionContext context) throws JobExecutionException {
         if (IntakeQueue.getInstance().isEmpty())
             log.debug("There are currently no jobs on the Intake Queue");
@@ -72,7 +74,7 @@ public class IntakeQueueWorker implements Job {
 
                     job.getClips().add(result.getClip());
                     // Remove Matched words from List
-                    for(String matchedWord: result.getWordsMatched()) {
+                    for (String matchedWord : result.getWordsMatched()) {
                         if (matchedWord.equals(words.get(0)))
                             words.remove(0);
                     }
@@ -83,11 +85,17 @@ public class IntakeQueueWorker implements Job {
                 }
             }
 
-            // TODO Send to ETS
+            ETJob etJob = new ETJob(job);
+            log.info("Pushing job to ETS");
+            job.setETSJobID(etJob.pushJob());
+            log.debug("ETS job has id - " + job.getETSJobID());
 
             updateJobStatus(job, StitchJob.TranscodeStatus.SUBMITTED);
             log.info(String.format("Finished Intake Processing for Job %s", job.getJobID()));
             log.debug(job.toString());
+
+            // Update Job in JobStore
+            JobStore.getInstance().putJob(job);
         }
     }
 }

@@ -70,6 +70,7 @@ dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.268'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.268'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.286'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.286'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-elastictranscoder', version: '1.11.286'
 
     // Local DB (Used for Job Storage)

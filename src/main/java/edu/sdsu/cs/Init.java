@@ -1,6 +1,7 @@
 package edu.sdsu.cs;
 
 import edu.sdsu.cs.Transcode.ETPipeline;
+import edu.sdsu.cs.Workers.ETUpdateQueueWorker;
 import edu.sdsu.cs.Workers.IntakeQueueWorker;
 import lombok.extern.log4j.Log4j;
 import org.quartz.SchedulerException;
@@ -38,6 +39,12 @@ public class Init implements ServletContextListener {
             IntakeQueueWorker.schedule(Schedule.getScheduler(), QUEUE_WORKER_FREQUENCY);
         } catch (SchedulerException e) {
             log.error("Problem scheduling Intake Queue Worker", e);
+        }
+
+        try {
+            ETUpdateQueueWorker.schedule(Schedule.getScheduler(), QUEUE_WORKER_FREQUENCY);
+        } catch (SchedulerException e) {
+            log.error("Problem scheduling Elastic Transcoder Update Queue Worker", e);
         }
     }
 

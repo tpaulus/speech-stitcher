@@ -2,7 +2,6 @@ package edu.sdsu.cs;
 
 import edu.sdsu.cs.Models.StitchJob;
 import lombok.Getter;
-import lombok.extern.log4j.Log4j;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.HTreeMap;
@@ -12,10 +11,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Store Stitch Jobs in a Memory Backed MapDB.
+ * Docs for MapDB can be found at: https://jankotek.gitbooks.io/mapdb/content/
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */
-@Log4j
+
+@SuppressWarnings("unused")
 public class JobStore {
     @Getter
     private static final int JOB_TTL = 36;
@@ -49,7 +52,7 @@ public class JobStore {
     }
 
     public void putJob(final StitchJob job) {
-        map.putIfAbsent(job.getJobID(), job);
+        map.put(job.getJobID(), job);
         db.commit();
     }
 

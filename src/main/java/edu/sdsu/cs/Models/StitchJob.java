@@ -3,6 +3,7 @@ package edu.sdsu.cs.Models;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import edu.sdsu.cs.Transcode.Storage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class StitchJob implements Serializable {
     private String body;
     private List<SourceClip> clips;
 
+    private String ETSJobID;
     private EventOutput broadcaster;
 
     @Builder
@@ -46,6 +48,10 @@ public class StitchJob implements Serializable {
 
     public void updateStatus(final Status updatedStatus) {
         setStatus(updatedStatus);
+        if (updatedStatus.status == TranscodeStatus.COMPLETED)
+            // Prep Video for Distribution
+            Storage.publishVideo(this);
+
         try {
             getBroadcaster().write(new OutboundEvent.Builder()
                     .name("stitch-status")

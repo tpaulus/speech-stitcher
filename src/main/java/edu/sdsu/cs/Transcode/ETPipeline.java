@@ -15,10 +15,9 @@ import java.util.Properties;
  */
 @Log4j
 public class ETPipeline {
-    private static final String CONFIG_FILE_NAME = "ets_pipeline.properties";
 
     private static ETPipeline instance = new ETPipeline();
-    private AmazonElasticTranscoder elasticTranscoder;
+    AmazonElasticTranscoder elasticTranscoder;
     private Properties pipelineConfig = new Properties();
 
     @Getter
@@ -26,15 +25,16 @@ public class ETPipeline {
 
     private ETPipeline() {
         try {
-            pipelineConfig.load(this.getClass().getClassLoader().getResourceAsStream(CONFIG_FILE_NAME));
+            pipelineConfig.load(this.getClass().getClassLoader().getResourceAsStream(Credentials.CONFIG_FILE_NAME));
         } catch (IOException e) {
             log.error("Could not open Pipeline Config - unable to create pipeline");
+            throw new RuntimeException("Could not open Pipeline Config", e);
         }
 
         elasticTranscoder = AmazonElasticTranscoderClientBuilder
                 .standard()
                 .withCredentials(Credentials.getCredentials())
-                .withRegion(pipelineConfig.getProperty("region"))
+                .withRegion(Credentials.getRegion())
                 .build();
     }
 
