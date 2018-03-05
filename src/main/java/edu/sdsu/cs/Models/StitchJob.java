@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * POJO Model of Stitching Job.
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */

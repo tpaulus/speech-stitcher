@@ -7,6 +7,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * FIFO Queue to manage the processing of jobs submitted by users. When a user posts a new job to the Generate API
+ * Endpoint, a new StitchJob is created and pushed to the JobStore. The ID of the job to process is then added to
+ * the processing queue (this class). From there, it is processed by the IntakeQueueWorker.
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */
@@ -15,12 +19,12 @@ public class IntakeQueue {
     private static IntakeQueue queueInstance = new IntakeQueue();
     private Queue<String> jobQueue;
 
-    public static IntakeQueue getInstance() {
-        return queueInstance;
-    }
-
     private IntakeQueue() {
         jobQueue = new LinkedList<>();
+    }
+
+    public static IntakeQueue getInstance() {
+        return queueInstance;
     }
 
     public void addJob(StitchJob job) {
@@ -42,5 +46,9 @@ public class IntakeQueue {
 
     public boolean isEmpty() {
         return jobQueue.isEmpty();
+    }
+
+    public int size() {
+        return jobQueue.size();
     }
 }

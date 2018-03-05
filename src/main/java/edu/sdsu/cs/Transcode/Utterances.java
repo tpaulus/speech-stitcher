@@ -54,6 +54,17 @@ public class Utterances {
         return Dynamo.getInstance().getFromTable(tableName, "id", id, Word.class);
     }
 
+    /**
+     * Find the best word sequence for a given word sequence. The goal is to find the longest possible clip that
+     * includes the most possible word matches. One clip that includes two words is preferred over two different clips.
+     *
+     * @param tableName {@link String} Table name in DynamoDB
+     * @param wordSequence {@link List} Input Word Sequence
+     * @return {@link FindResult} Results of the Search. Includes the Words that were matched and the corresponding source clip.
+     * @throws UtteranceNotFoundException {@link UtteranceNotFoundException} Thrown if the word is not found in the
+     *                                    utterance table. This usually occurs with unique words, like names, that have
+     *                                    not been "heard" in the input media.
+     */
     public static FindResult getBestWordSequence(final String tableName, final List<String> wordSequence) throws UtteranceNotFoundException {
         Queue<ResultWord> wordsPQ = new PriorityQueue<>();
 

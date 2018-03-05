@@ -6,6 +6,8 @@ import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
 /**
+ * Singelton to manage the Quartz Job Scheduler
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */

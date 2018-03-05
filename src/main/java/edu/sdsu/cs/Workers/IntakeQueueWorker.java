@@ -16,6 +16,9 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
+ * Processes Jobs on the Input Queue. This entails finding the correct source clips, preparing and finally sending the
+ * stitch job to AWS Elastic Transcoder Service.
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */

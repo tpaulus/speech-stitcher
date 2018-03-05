@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 
 /**
+ * Simple Status Message
+ *
  * @author Tom Paulus
  * Created on 1/22/18.
  */

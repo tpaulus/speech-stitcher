@@ -24,6 +24,9 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
+ * Pull notifications from the SQS Queue which are sent by the Elastic Transcoder Service whenever a change in status
+ * for a Job Occurs.
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */
@@ -107,6 +110,12 @@ public class ETUpdateQueueWorker implements Job {
             log.debug("Received ETS Status Update for Job - " + notification_job_id);
             log.debug(notification.getMessageDetails());
             StitchJob stitchJob = JobStore.getInstance().getJob(notification_job_id);
+            if (stitchJob == null) {
+                log.warn(String.format("No Job with id %s was found even though an SNS notification was sent. This is only a problem" +
+                        "if the server hasn't been restarted in a while, as it means that jobs have been lost", notification_job_id));
+                throw new RuntimeException("Job could not be found");
+            }
+
             switch (notification.getState()){
                 case PROGRESSING:
                     updateJobStatus(stitchJob, StitchJob.TranscodeStatus.IN_PROGRESS);

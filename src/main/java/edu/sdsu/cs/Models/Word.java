@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.Getter;
 
 /**
+ * POJO Model for a Word Utterance as it is saved in the DynamoDB Table
+ *
  * @author Tom Paulus
  * Created on 1/22/18.
  */

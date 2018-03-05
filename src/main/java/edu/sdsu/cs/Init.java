@@ -10,6 +10,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
+ * Context Initialize and Destroy listener to make sure the web app starts correctly and shutdown cleanly.
+ *
  * @author Tom Paulus
  * Created on 1/22/18.
  */

@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 /**
+ * Interface for creating Elastic Transcoder Jobs. These jobs describe a specific transcode job and are pushed to an
+ * ETS pipeline for processing.
+ *
  * A list of system presets can be found on the AWS ETS Documentation:
  * https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/system-presets.html
  *
@@ -48,6 +51,11 @@ public class ETJob {
                 }});
     }
 
+    /**
+     * Push job to the active pipeline.
+     *
+     * @return {@link String} Job ID returned by the Elastic Transcoder Service
+     */
     public String pushJob() {
         CreateJobResult result = ETPipeline.getInstance().elasticTranscoder.createJob(createJobRequest);
         log.debug("CreatePipelineRequest - " + ETPipeline.getInstance().elasticTranscoder.getCachedResponseMetadata(createJobRequest));

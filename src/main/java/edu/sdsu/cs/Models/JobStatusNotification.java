@@ -5,6 +5,9 @@ import lombok.Data;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * POJO Model for JSON Object that is sent by ETS to SNS
+ */
 @Data
 public class JobStatusNotification {
     private JobState state;

@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Interface for Elastic Transcoder Pipeline AWS SDK.
+ * The pipeline is what processes the jobs and is responsible for asset storage and retrieval, as well as sending
+ * notifications on job status updates.
+ *
  * @author Tom Paulus
  * Created on 2/28/18.
  */
