@@ -57,8 +57,9 @@ public class ETPipeline {
         createPipelineRequest.setName(pipelineConfig.getProperty("name"));
         createPipelineRequest.setInputBucket(pipelineConfig.getProperty("s3.source_bucket"));
         createPipelineRequest.setOutputBucket(pipelineConfig.getProperty("s3.destination_bucket"));
-        notifications.setProgressing(pipelineConfig.getProperty("sns.progressing_topic"));
-        notifications.setCompleted(pipelineConfig.getProperty("sns.completion_topic"));
+        notifications.setProgressing(pipelineConfig.getProperty("sns.topic"));
+        notifications.setCompleted(pipelineConfig.getProperty("sns.topic"));
+        notifications.setError(pipelineConfig.getProperty("sns.topic"));
         createPipelineRequest.setNotifications(notifications);
 
         CreatePipelineResult result = elasticTranscoder.createPipeline(createPipelineRequest);
